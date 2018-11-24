@@ -1,3 +1,11 @@
+#k8s软件的教程
+```
+https://classroom.udacity.com/courses/ud615/lessons/7826112332/concepts/80841806450923
+账号qq21008037@iigogo.com
+密码aa123456
+```
+
+
 #开启sql自动化审计
 ```
 docker run --name inception -v /Users/jim/aa/inc1.cnf:/etc/inc.cnf  -p 6669:6669 -dti registry.cn-hangzhou.aliyuncs.com/lihuanhuan/inception
