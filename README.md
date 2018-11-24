@@ -4,7 +4,97 @@ https://classroom.udacity.com/courses/ud615/lessons/7826112332/concepts/80841806
 账号qq21008037@iigogo.com
 密码aa123456
 ```
+#k8s软件发布需要协商的定义
+```
+I.代码库
+一个代码库在版本控制中跟踪，许多部署
+II。依赖
+明确声明并隔离依赖项
+III。配置
+在环境中存储配置
+IV。支持服务
+将支持服务视为附加资源
+V.构建，发布，运行
+严格分开构建和运行阶段
+VI。流程
+将应用程序作为一个或多个无状态进程执行
+七。端口绑定
+通过端口绑定导出服务
+八。并发
+通过流程模型扩展
+IX。可处理
+通过快速启动和正常关闭最大限度地提高稳健性
+X. Dev / prod parity
+保持开发，分期和生产尽可能相似
+十一。日志
+将日志视为事件流
+十二。管理流程
+将管理/管理任务作为一次性流程运行
+```
+#k8s定义
+```
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: {5}-{0}
+spec:
+    replicas: {1} 
+    template:
+      metadata:
+        labels: 
+          app: a{5}{0}
+      spec:
+        imagePullSecrets:
+        - name: myregistrykey
+        containers:
+        - name: nginx{5}{0}
+          image: {7}/{0}:{3}
+          ports:
+          - containerPort: {4}
+          env:
+          - name: DEMO_GREETING
+            value: "Hello from the environment"
+{2}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {5}
+spec:
+  type: NodePort
+  selector:
+    app: a{5}{0}
+  ports:
+    - protocol: TCP
+      port: {4}
+      targetPort: {4}
 
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: "600M"
+	nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+  name: web{5}
+spec:
+  rules:
+  - host: {5}.p88health.com
+    http:
+      paths:
+      - backend:
+          serviceName: {5}
+          servicePort: {4}
+
+EOF
+rancher kubectl create secret docker-registry myregistrykey --docker-server=https://index.docker.io/v1/ --docker-username=aontimer --docker-password=jmdj --docker-email=99806761@qq.com
+
+rancher kubectl apply -f ~/test.txt
+rancher kubectl delete hpa {5}-{0}
+rancher kubectl autoscale deployment {5}-{0} --min={1} --max={6} --cpu-percent=80
+""".format(obj.images,obj.Number,senvall,obj.tag,obj.port,obj.Name,obj.max,obj.url)
+```
 
 #开启sql自动化审计
 ```
